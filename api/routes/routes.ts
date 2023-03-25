@@ -1,8 +1,9 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import { Logger } from "../logger/logger";
-import { body, validationResult } from "express-validator";
+import { body, header, validationResult } from "express-validator";
 import { isLevel, isValidPhoneNumber } from "../validation/validation";
+import { Teacher, Class, Subject, Level } from "../types";
 
 class Routes {
   public express: express.Application;
@@ -31,6 +32,15 @@ class Routes {
         contactNumber: "61824191",
       },
     ];
+    this.classes = [
+      {
+        level: Level.P4,
+        name: "Class 4A",
+        formTeacher: {
+          name: "Ken"
+        }
+      }
+    ];
   }
 
   // Configure Express middleware.
@@ -50,6 +60,7 @@ class Routes {
     // create teacher
     this.express.post(
       "/teachers",
+      header("content-type").equals("application/json"),
       body("name").isString().notEmpty(),
       body("subject").isString().notEmpty(),
       body("email").isEmail().notEmpty(),
@@ -66,10 +77,17 @@ class Routes {
         }
       }
     );
-
+    
+    // get classes
+    this.express.get("/classes", (req, res) => {
+      this.logger.info("url:::::::" + req.url);
+      res.status(200).json(this.classes);
+    });
+    
     // add class
     this.express.post(
       "/classes",
+      header("content-type").equals("application/json"),
       body("level").notEmpty().custom(isLevel),
       body("name").notEmpty().isString(),
       body("teacherEmail").notEmpty().isEmail(),
@@ -85,12 +103,6 @@ class Routes {
         }
       }
     );
-
-    // get classes
-    this.express.get("classes", (req, res) => {
-      this.logger.info("url:::::::" + req.url);
-      res.status(200).json(this.classes);
-    })
   }
 }
 

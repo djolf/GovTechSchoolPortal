@@ -1,11 +1,11 @@
-interface Teacher {
+export interface Teacher {
   name: string;
   subject: Subject;
   email: string;
   contactNumber: string;
 }
 
-interface Class {
+export interface Class {
   level: Level;
   name: string;
   formTeacher: {
@@ -13,7 +13,7 @@ interface Class {
   };
 }
 
-declare enum Level {
+export enum Level {
   P1 = "Primary 1",
   P2 = "Primary 2",
   P3 = "Primary 3",
@@ -22,7 +22,7 @@ declare enum Level {
   P6 = "Primary 6"
 }
 
-declare enum Subject {
+export enum Subject {
   EN = "English Language",
   MT = "Mother Tongue Language",
   MA = "Mathematics",

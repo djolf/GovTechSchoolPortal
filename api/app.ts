@@ -33,6 +33,7 @@ class App {
 
     // handle undefined routes
     this.express.use("*", (req, res) => {
+      this.logger.error(":::::url::::::"+req.baseUrl);
       res.sendStatus(404);
     });
   }
